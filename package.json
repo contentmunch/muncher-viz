@@ -1,6 +1,6 @@
 {
   "name": "@contentmunch/muncher-viz",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Muncher visualization components",
   "author": "asikpradhan",
   "license": "MIT",
@@ -41,6 +41,8 @@
     "@storybook/addon-essentials": "^6.2.9",
     "@storybook/addon-links": "^6.2.9",
     "@storybook/addon-storyshots": "^6.2.9",
+    "@storybook/node-logger": "^6.2.9",
+    "@storybook/preset-create-react-app": "^3.1.7",
     "@storybook/react": "^6.2.9",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.6",
