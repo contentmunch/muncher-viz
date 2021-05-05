@@ -1,0 +1,105 @@
+{
+  "name": "@contentmunch/muncher-viz",
+  "version": "0.1.1",
+  "description": "Muncher visualization components",
+  "author": "asikpradhan",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/"
+  ],
+  "scripts": {
+    "start": "npm run storybook",
+    "prebuild": "rimraf lib",
+    "build": "npm run build:types && npm run build:js ",
+    "clean:tsx": "rimraf lib/*.tsx lib/**/*.tsx lib/**/**/*.tsx lib/**/**/**/*.tsx",
+    "clean:stories": "rimraf  lib/*.stories.* lib/**/*.stories.* lib/**/**/*.stories.* lib/**/**/**/*.stories.*",
+    "clean:tests": "rimraf lib/*.test.* lib/**/*.test.* lib/setupTests.* lib/__snapshots__/",
+    "clean:reactfiles": "rimraf lib/react-app-env.d.ts",
+    "postbuild": "npm run clean:tsx && npm run clean:reactfiles && npm run clean:stories && npm run clean:tests",
+    "build:types": "cp tsconfig-tsc.json tsconfig.json && tsc --emitDeclarationOnly",
+    "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
+    "postbuild:js": "rsync -avz --exclude='*.ts' src/ lib/",
+    "prepublishOnly": "npm run build",
+    "pretest": "cp tsconfig-test.json tsconfig.json",
+    "test": "react-scripts test -u",
+    "deploy": "npm run build-storybook",
+    "postdeploy": "cp public/CNAME docs/CNAME",
+    "storybook": "start-storybook -p 6010 -s public",
+    "build-storybook": "build-storybook -s public -o docs"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.14.0",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/preset-env": "^7.14.1",
+    "@babel/preset-react": "^7.13.13",
+    "@babel/preset-typescript": "^7.13.0",
+    "@storybook/addon-a11y": "^6.2.9",
+    "@storybook/addon-actions": "^6.2.9",
+    "@storybook/addon-essentials": "^6.2.9",
+    "@storybook/addon-links": "^6.2.9",
+    "@storybook/addon-storyshots": "^6.2.9",
+    "@storybook/react": "^6.2.9",
+    "@testing-library/jest-dom": "^5.12.0",
+    "@testing-library/react": "^11.2.6",
+    "@testing-library/user-event": "^12.8.3",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^12.20.12",
+    "@types/react": "^17.0.5",
+    "@types/react-dom": "^17.0.3",
+    "babel-loader": "^8.1.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "react-test-renderer": "^17.0.2",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.2.4",
+    "web-vitals": "^1.1.1"
+  },
+  "dependencies": {
+    "node-sass": "^5.0.0",
+    "normalize.css": "^8.0.1"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/contentmunch/muncher-viz.git"
+  },
+  "bugs": {
+    "url": "https://github.com/contentmunch/muncher-viz/issues"
+  },
+  "homepage": "https://viz.muncher.dev",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib"
+  },
+  "keywords": [
+    "html5",
+    "reactjs",
+    "visulization",
+    "d3js",
+    "component driven"
+  ],
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
