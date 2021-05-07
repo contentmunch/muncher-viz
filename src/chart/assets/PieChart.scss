@@ -1,0 +1,17 @@
+@import "src/assets/variables";
+
+.muncher-pie-chart {
+  width: 2rem;
+  height: 2rem;
+
+  .text {
+    font-size: .25rem;
+    font-weight: 200;
+    font-family: $serif-font;
+  }
+
+  @media(min-width: $medium-size) {
+    width: 25rem;
+    height: 25rem;
+  }
+}
