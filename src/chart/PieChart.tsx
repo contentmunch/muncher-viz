@@ -11,8 +11,7 @@ export const PieChart: React.FC<PieChartProps> = ({data}) => {
     const pie = d3.pie<ChartData>().padAngle(0.005).sort(null).value(d => d.value);
     const arc = d3.arc<PieArcDatum<ChartData>>().innerRadius(0).outerRadius(radius - 1);
     const pieData = pie(data);
-    const color = d3
-        .scaleOrdinal()
+    const color = d3.scaleOrdinal()
         .domain(
             (d3.extent(data, (d) => {
                 return d.title
