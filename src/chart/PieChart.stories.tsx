@@ -39,7 +39,9 @@ const Template: Story<PieChartProps> = (args) => {
 
     return (
         <>
-            <PieChart data={pieData} onClick={handleOnClick}/>
+            <PieChart data={pieData} onClick={handleOnClick} valueFormatter={num => {
+                return num + "%";
+            }}/>
             <button onClick={handleButtonClicked}>Change Data</button>
             {selectedIndex !== -1 ? <p>Selected: {pieData[selectedIndex].title}</p> : ""}
         </>

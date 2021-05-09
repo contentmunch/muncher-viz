@@ -25,6 +25,9 @@
     font-weight: bold;
     font-family: $sans-serif-font;
   }
+  .value {
+    font-size: .2rem;
+  }
 
   @media(min-width: $medium-size) {
     width: 20rem;
