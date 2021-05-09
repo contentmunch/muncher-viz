@@ -10,11 +10,15 @@
     transition: fill ease-in-out .4s;
   }
 
-  path:hover, .selected {
+  path:hover {
     opacity: .9;
-    stroke: white;
   }
 
+  .selected {
+    opacity: .9;
+    stroke: white;
+    stroke-width: .1rem;
+  }
 
   .text {
     font-size: .3rem;
