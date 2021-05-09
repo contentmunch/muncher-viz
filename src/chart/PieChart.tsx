@@ -4,20 +4,22 @@ import {PieArcDatum} from "d3";
 import "./assets/PieChart.scss";
 import {ChartData} from "./data/ChartData";
 
-export const PieChart: React.FC<PieChartProps> = ({data, onClick, valueFormatter}) => {
-    const ref: RefObject<SVGSVGElement> = React.createRef();
+export const PieChart: React.FC<PieChartProps> = (
+    {data, withLegend, legendTitle, onClick, valueFormatter}) => {
+    const chartRef: RefObject<SVGSVGElement> = React.createRef();
+    const legendRef: RefObject<SVGSVGElement> = React.createRef();
     const viewBox = "-50 -50 100 100";
     const radius = 50;
     const pie = d3.pie<ChartData>().padAngle(0.005).sort(null).value(d => d.value);
     const arc = d3.arc<PieArcDatum<ChartData>>().innerRadius(0).outerRadius(radius - 1);
     const pieData = pie(data);
-    const formatNumber = (num: number) => {
+    const formatNumber = useCallback((num: number) => {
         if (valueFormatter) {
             return valueFormatter(num);
         } else {
             return num;
         }
-    };
+    }, [valueFormatter]);
 
     const color = d3.scaleOrdinal()
         .domain(
@@ -26,25 +28,27 @@ export const PieChart: React.FC<PieChartProps> = ({data, onClick, valueFormatter
             }) as unknown) as string
         )
         .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), data.length).reverse())
+
+    const clickHandler = useCallback((e: any, d: PieArcDatum<ChartData>) => {
+        if (onClick) {
+            onClick(d.index);
+        }
+    }, [onClick]);
     const draw = useCallback(() => {
-        const svg = d3.select(ref.current)
+        const chart = d3.select(chartRef.current)
             .attr("viewBox", viewBox);
-        svg.selectAll("g").remove();
-        svg.selectAll("path").remove();
-        svg.selectAll("path")
+        chart.selectAll("g").remove();
+        chart.selectAll("path").remove();
+        chart.selectAll("path")
             .data(pieData)
             .join("path")
-            .on('click', (event, d) => {
-                if (onClick) {
-                    onClick(d.index);
-                }
-            })
+            .on('click', clickHandler)
             .classed("selected", d => d.data.isSelected)
             .attr("fill", d => color(d.data.title) as string)
             .attr("d", arc)
             .append("title").text(d => `${d.data.title}(${formatNumber(d.data.value)})`);
 
-        svg.append("g")
+        chart.append("g")
             .classed("text", true)
             .attr("text-anchor", "middle")
             .selectAll("text")
@@ -61,14 +65,57 @@ export const PieChart: React.FC<PieChartProps> = ({data, onClick, valueFormatter
                 .attr("fill-opacity", 0.7)
                 .classed("value", true)
                 .text(d => "(" + formatNumber(d.data.value) + ")"));
-    }, [arc, color, pieData, ref, onClick]);
+        if (withLegend) {
+            const legend = d3.select(legendRef.current).attr("viewBox", "0 0 100 100");
+            legend.selectAll("g").remove();
+            legend.append("text").text(legendTitle ? legendTitle : "Legend")
+                .attr("y", 10)
+                .attr("x", 6)
+                .classed("legend-title", true);
+
+            const legendGraphics = legend.selectAll("g")
+                .data(pieData)
+                .enter().append("g");
+
+
+            legendGraphics.attr("transform", (d, i) => `translate(6,${i * 10 + 14})`)
+                .append("rect")
+                .data(pieData)
+                .attr("width", 6)
+                .attr("height", 6)
+                .on('click', clickHandler)
+                .classed("legend-rect", true)
+                .classed("legend-rect--selected", d => d.data.isSelected)
+                .attr("fill", d => color(d.data.title) as string)
+                .append("title").text(d => `${d.data.title}(${formatNumber(d.data.value)})`);
+
+
+            legendGraphics.append("text").data(pieData).text(d => `${d.data.title} (${formatNumber(d.data.value)})`)
+                .on('click', clickHandler)
+                .classed("legend-text", true)
+                .classed("legend-text--selected", d => d.data.isSelected)
+                .attr("y", 4)
+                .attr("x", 8);
+
+        }
+
+    }, [arc, color, pieData, chartRef, legendRef, formatNumber, clickHandler, withLegend]);
 
 
     useEffect(() => {
         draw();
     }, [draw]);
     return (
-        <svg ref={ref} className="muncher-pie-chart"/>
+        <div className="muncher-pie-chart">
+            <svg ref={chartRef} className="svg-pie-chart"/>
+            {withLegend ?
+                <svg className="svg-pie-chart-legend" ref={legendRef}>
+
+                </svg>
+
+                : ""}
+        </div>
+
     );
 
 };
@@ -76,6 +123,8 @@ export const PieChart: React.FC<PieChartProps> = ({data, onClick, valueFormatter
 
 export interface PieChartProps {
     data: ChartData[];
+    withLegend?: boolean;
+    legendTitle?: string;
     onClick?: (index: number) => void;
     valueFormatter?: (num: number) => string;
 }
