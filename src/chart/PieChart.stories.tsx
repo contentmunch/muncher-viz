@@ -13,13 +13,13 @@ const Template: Story<PieChartProps> = (args) => {
 
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [pieData, setPieData] = useState<ChartData[]>([
-        {title: "First", value: 100, isSelected: true},
-        {title: "Second", value: 20, isSelected: false},
-        {title: "Third", value: 40, isSelected: false},
+        {title: "First", value: 60, isSelected: true},
+        {title: "Second", value: 1, isSelected: false},
+        {title: "Third", value: 5, isSelected: false},
     ]);
     const handleButtonClicked = () => {
         const currentData = [...pieData];
-        currentData[1].value = currentData[1].value === 20 ? 40 : 20;
+        currentData[1].value = currentData[1].value === 1 ? 10 : 1;
         setPieData(currentData);
     };
     const handleOnClick = (index: number) => {

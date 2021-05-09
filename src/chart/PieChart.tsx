@@ -42,7 +42,7 @@ export const PieChart: React.FC<PieChartProps> = ({data, onClick, valueFormatter
             .classed("selected", d => d.data.isSelected)
             .attr("fill", d => color(d.data.title) as string)
             .attr("d", arc)
-            .append("title").text(d => `${d.data.title}: ${d.data.value.toLocaleString()}`);
+            .append("title").text(d => `${d.data.title}(${formatNumber(d.data.value)})`);
 
         svg.append("g")
             .classed("text", true)
@@ -51,11 +51,11 @@ export const PieChart: React.FC<PieChartProps> = ({data, onClick, valueFormatter
             .data(pieData)
             .join("text")
             .attr("transform", d => `translate(${arc.centroid(d)})`)
-            .call(text => text.append("tspan")
+            .call(text => text.filter(d => (d.endAngle - d.startAngle) > 0.4).append("tspan")
                 .attr("y", "-0.4em")
                 .classed("title", true)
                 .text(d => d.data.title))
-            .call(text => text.filter(d => (d.endAngle - d.startAngle) > 0.25).append("tspan")
+            .call(text => text.filter(d => (d.endAngle - d.startAngle) > 0.4).append("tspan")
                 .attr("x", 0)
                 .attr("y", "0.7em")
                 .attr("fill-opacity", 0.7)
