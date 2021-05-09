@@ -68,6 +68,7 @@ export const PieChart: React.FC<PieChartProps> = (
         if (withLegend) {
             const legend = d3.select(legendRef.current).attr("viewBox", "0 0 100 100");
             legend.selectAll("g").remove();
+            legend.selectAll("text").remove();
             legend.append("text").text(legendTitle ? legendTitle : "Legend")
                 .attr("y", 10)
                 .attr("x", 6)
