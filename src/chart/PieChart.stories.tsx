@@ -24,11 +24,16 @@ const Template: Story<PieChartProps> = (args) => {
     };
     const handleOnClick = (index: number) => {
         const currentData = [...pieData];
-        currentData.forEach(value => {
-            value.isSelected = false;
-        });
-        setSelectedIndex(index);
-        currentData[index].isSelected = true;
+        if (currentData[index].isSelected) {
+            currentData[index].isSelected = false;
+            setSelectedIndex(-1);
+        } else {
+            currentData.forEach(value => {
+                value.isSelected = false;
+            });
+            setSelectedIndex(index);
+            currentData[index].isSelected = true;
+        }
         setPieData(currentData);
     };
 
@@ -36,7 +41,7 @@ const Template: Story<PieChartProps> = (args) => {
         <>
             <PieChart data={pieData} onClick={handleOnClick}/>
             <button onClick={handleButtonClicked}>Change Data</button>
-            <p>selected: {pieData[selectedIndex].title}</p>
+            {selectedIndex !== -1 ? <p>Selected: {pieData[selectedIndex].title}</p> : ""}
         </>
     );
 };
