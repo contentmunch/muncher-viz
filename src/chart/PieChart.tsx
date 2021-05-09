@@ -99,7 +99,7 @@ export const PieChart: React.FC<PieChartProps> = (
 
         }
 
-    }, [arc, color, pieData, chartRef, legendRef, formatNumber, clickHandler, withLegend]);
+    }, [arc, color, pieData, chartRef, legendRef, legendTitle, formatNumber, clickHandler, withLegend]);
 
 
     useEffect(() => {
