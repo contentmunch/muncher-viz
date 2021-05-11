@@ -8,8 +8,8 @@ $selected-color: $light-color !default;
 
 
   .svg-pie-chart {
-    width: 15rem;
-    height: 15rem;
+    width: 12rem;
+    height: 12rem;
 
     path {
       cursor: pointer;
@@ -38,8 +38,8 @@ $selected-color: $light-color !default;
     }
 
     @media(min-width: $medium-size) {
-      width: 20rem;
-      height: 20rem;
+      width: 15rem;
+      height: 15rem;
       .text {
         font-weight: lighter;
       }
@@ -53,8 +53,8 @@ $selected-color: $light-color !default;
     //width: 100vw;
     .svg-pie-chart-legend {
       display: block;
-      width: 20rem;
-      height: 20rem;
+      width: 10rem;
+      height: 15rem;
 
       .legend-rect {
         cursor: pointer;
