@@ -13,9 +13,9 @@ export const PieChart: React.FC<PieChartProps> = (
     const pie = d3.pie<ChartData>().padAngle(0.005).sort(null).value(d => d.value);
     const arc = d3.arc<PieArcDatum<ChartData>>().innerRadius(0).outerRadius(radius - 1);
     const pieData = pie(data);
-    const formatNumber = useCallback((num: number) => {
+    const formatNumber = useCallback((num: number, index: number) => {
         if (valueFormatter) {
-            return valueFormatter(num);
+            return valueFormatter(num, index);
         } else {
             return num;
         }
@@ -46,7 +46,7 @@ export const PieChart: React.FC<PieChartProps> = (
             .classed("selected", d => d.data.isSelected)
             .attr("fill", d => color(d.data.title) as string)
             .attr("d", arc)
-            .append("title").text(d => `${d.data.title}(${formatNumber(d.data.value)})`);
+            .append("title").text((d, index) => `${d.data.title}(${formatNumber(d.data.value, index)})`);
 
         chart.append("g")
             .classed("text", true)
@@ -64,7 +64,7 @@ export const PieChart: React.FC<PieChartProps> = (
                 .attr("y", "0.7em")
                 .attr("fill-opacity", 0.7)
                 .classed("value", true)
-                .text(d => "(" + formatNumber(d.data.value) + ")"));
+                .text((d, index) => "(" + formatNumber(d.data.value, index) + ")"));
         if (withLegend) {
             const legend = d3.select(legendRef.current).attr("viewBox", "10 0 50 100");
             legend.selectAll("g").remove();
@@ -87,11 +87,11 @@ export const PieChart: React.FC<PieChartProps> = (
                 .on('click', clickHandler)
                 .classed("legend-rect", true)
                 .classed("legend-rect--selected", d => d.data.isSelected)
-                .attr("fill", d => color(d.data.title) as string)
-                .append("title").text(d => `${d.data.title}(${formatNumber(d.data.value)})`);
+                .attr("fill", d => color(d.data.title) as string);
 
-
-            legendGraphics.append("text").data(pieData).text(d => `${d.data.title} (${formatNumber(d.data.value)})`)
+            legendGraphics.append("text").data(pieData).text((d, index) =>
+                d.data.legend ? d.data.legend : d.data.title + " (" + formatNumber(d.data.value, index) + ")"
+            )
                 .on('click', clickHandler)
                 .classed("legend-text", true)
                 .classed("legend-text--selected", d => d.data.isSelected)
@@ -127,5 +127,5 @@ export interface PieChartProps {
     withLegend?: boolean;
     legendTitle?: string;
     onClick?: (index: number) => void;
-    valueFormatter?: (num: number) => string;
+    valueFormatter?: (num: number, index: number) => string;
 }
