@@ -34,6 +34,11 @@ export const PieChart: React.FC<PieChartProps> = (
             onClick(d.index);
         }
     }, [onClick]);
+
+    const legendText = useCallback((data: ChartData, index: number) => {
+        return data.legend ? data.legend : data.title + " (" + formatNumber(data.value, index) + ")";
+    }, []);
+
     const draw = useCallback(() => {
         const chart = d3.select(chartRef.current)
             .attr("viewBox", viewBox);
@@ -46,7 +51,7 @@ export const PieChart: React.FC<PieChartProps> = (
             .classed("selected", d => d.data.isSelected)
             .attr("fill", d => color(d.data.title) as string)
             .attr("d", arc)
-            .append("title").text((d, index) => `${d.data.title}(${formatNumber(d.data.value, index)})`);
+            .append("title").text((d) => legendText(d.data,d.index));
 
         chart.append("g")
             .classed("text", true)
@@ -64,7 +69,7 @@ export const PieChart: React.FC<PieChartProps> = (
                 .attr("y", "0.7em")
                 .attr("fill-opacity", 0.7)
                 .classed("value", true)
-                .text((d, index) => "(" + formatNumber(d.data.value, index) + ")"));
+                .text((d) => "(" + formatNumber(d.data.value, d.index) + ")"));
         if (withLegend) {
             const legend = d3.select(legendRef.current).attr("viewBox", "10 0 50 100");
             legend.selectAll("g").remove();
@@ -89,8 +94,8 @@ export const PieChart: React.FC<PieChartProps> = (
                 .classed("legend-rect--selected", d => d.data.isSelected)
                 .attr("fill", d => color(d.data.title) as string);
 
-            legendGraphics.append("text").data(pieData).text((d, index) =>
-                d.data.legend ? d.data.legend : d.data.title + " (" + formatNumber(d.data.value, index) + ")"
+            legendGraphics.append("text").data(pieData).text((d) =>
+                legendText(d.data, d.index)
             )
                 .on('click', clickHandler)
                 .classed("legend-text", true)
