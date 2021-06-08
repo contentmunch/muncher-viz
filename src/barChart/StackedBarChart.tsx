@@ -59,17 +59,13 @@ export const StackedBarChart: React.FC<BarChartProps> = (
         const fill = barChart.append("g")
             .selectAll("g")
             .data(stackData(data.values))
-            .enter().append("g")
+            .join("g")
             .attr("fill", d => z(d.key) as string);
-        fill.append("title").text((d, i) => {
-            console.log(d);
-            const barValue = d[i][1] - d[i][0];
-            return `${d.key} (${d[i]})`;
-        });
+
 
         fill.selectAll("rect")
             .data(d => d)
-            .enter().append("rect")
+            .join("rect")
             .classed("bar-rectangle", true)
             .attr("y", d => {
                 return y(d.data[data.titleField]) as number;
@@ -77,6 +73,11 @@ export const StackedBarChart: React.FC<BarChartProps> = (
             .attr("x", d => x(d[0]))
             .attr("width", d => x(d[1]) - x(d[0]))
             .attr("height", y.bandwidth())
+            .append("title")
+            .text((d, i) => {
+                console.log(d);
+                return (i)
+            });
 
         barChart.append("g")
             .attr("class", "axis")
@@ -93,7 +94,7 @@ export const StackedBarChart: React.FC<BarChartProps> = (
             .attr("text-anchor", "end")
             .selectAll("g")
             .data(data.stackFields.slice().reverse())
-            .enter().append("g")
+            .join("g")
             .attr("transform", (d, i) => "translate(120," + (i * 20) + ")");
 
         legend.append("rect")
@@ -107,7 +108,7 @@ export const StackedBarChart: React.FC<BarChartProps> = (
             .attr("y", 9.5)
             .attr("dy", "0.32rem")
             .text(d => d);
-    }, [svgRef, data.stackFields, data.values, data.titleField,data.totalField, colorRange, toPercentage]);
+    }, [svgRef, data.stackFields, data.values, data.titleField, data.totalField, colorRange, toPercentage]);
 
     useEffect(() => {
         draw();
