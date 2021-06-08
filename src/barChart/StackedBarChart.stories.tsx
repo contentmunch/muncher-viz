@@ -10,48 +10,55 @@ export default {
 
 
 const Template: Story<BarChartProps> = (args) => {
+
     const initValue: FieldValue[][] = [[
         {
             "title": "Cape Dutch Villas",
-            "renewal": 62,
-            "new": 34,
-            "extension": 0,
-            "empty": 4
+            "renewal": 16,
+            "new": 7,
+            "extension": 1,
+            "vacant": 2,
+            "total": 26
         },
         {
             "title": "Covenanter Hill",
-            "renewal": 66,
-            "new": 23,
-            "extension": 11,
-            "empty": 0
+            "renewal": 99,
+            "new": 96,
+            "extension": 1,
+            "vacant": 1,
+            "total": 197
         },
         {
             "title": "HighGrove",
-            "renewal": 70,
-            "new": 20,
-            "extension": 8,
-            "empty": 2
+            "renewal": 23,
+            "new": 22,
+            "extension": 1,
+            "vacant": 2,
+            "total": 48
         },
         {
             "title": "MeadowCreek",
-            "renewal": 80,
-            "new": 7,
-            "extension": 6,
-            "empty": 7
+            "renewal": 154,
+            "new": 74,
+            "extension": 1,
+            "vacant": 4,
+            "total": 233
         },
         {
             "title": "Scholars Quad",
-            "renewal": 90,
-            "new": 2,
-            "extension": 2,
-            "empty": 6
+            "renewal": 36,
+            "new": 36,
+            "extension": 0,
+            "vacant": 2,
+            "total": 74
         },
         {
             "title": "Scholars Rooftop",
-            "renewal": 62.5,
-            "new": 20,
-            "extension": 7,
-            "empty": 10.5
+            "renewal": 5,
+            "new": 8,
+            "extension": 0,
+            "vacant": 0,
+            "total": 13
         }
     ],
         [
@@ -60,62 +67,72 @@ const Template: Story<BarChartProps> = (args) => {
                 "renewal": 43,
                 "new": 22,
                 "extension": 0,
-                "empty": 35
+                "vacant": 35,
+                "total": 126
             },
             {
                 "title": "Covenanter Hill",
                 "renewal": 56,
                 "new": 33,
                 "extension": 1,
-                "empty": 10
+                "vacant": 10,
+                "total": 100
             },
             {
                 "title": "HighGrove",
                 "renewal": 60,
                 "new": 30,
                 "extension": 8,
-                "empty": 2
+                "vacant": 2,
+                "total": 100
             },
             {
                 "title": "MeadowCreek",
                 "renewal": 70,
                 "new": 17,
                 "extension": 6,
-                "empty": 7
+                "vacant": 7,
+                "total": 100
             },
             {
                 "title": "Scholars Quad",
                 "renewal": 80,
                 "new": 12,
                 "extension": 2,
-                "empty": 6
+                "vacant": 6,
+                "total": 100
             },
             {
                 "title": "Scholars Rooftop",
                 "renewal": 52.5,
                 "new": 30,
                 "extension": 7,
-                "empty": 10.5
+                "vacant": 10.5,
+                "total": 100
             },
             {
                 "title": "Porto Flats",
                 "renewal": 62.5,
                 "new": 20,
                 "extension": 7,
-                "empty": 10.5
+                "vacant": 10.5,
+                "total": 100
             },
             {
                 "title": "Verona Park",
                 "renewal": 32.5,
                 "new": 50,
                 "extension": 7,
-                "empty": 10.5
+                "vacant": 10.5,
+                "total": 100
             }
         ]
     ];
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const [toPercent, setToPercent] = useState(true);
     const [barData, setBarData] = useState<StackedBarChartData>({
-        stackFields: ["renewal", "new", "extension", "empty"],
+        stackFields: ["renewal", "new", "extension", "vacant"],
+        totalField: "total",
         titleField: "title",
         values: initValue[0]
     });
@@ -127,14 +144,17 @@ const Template: Story<BarChartProps> = (args) => {
         });
         setSelectedIndex(currentIndex);
     };
-
+    const togglePercent = () => {
+        setToPercent(!toPercent);
+    }
     return (
         <>
             <StackedBarChart
-                dataFormatter={(num => num + "%")}
                 data={barData}
+                toPercentage={toPercent}
                 colorRange={["#af7aa1", "#e15759", "#59a14f", "#f28e2c", "#4e79a7"]}
             />
+            <button onClick={togglePercent}>{toPercent ? "To Data" : "To Percent"}</button>
             <button onClick={handleButtonClicked}>Change Data</button>
         </>
     );

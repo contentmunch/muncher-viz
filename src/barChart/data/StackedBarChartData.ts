@@ -1,5 +1,6 @@
 export interface StackedBarChartData {
     titleField: string;
+    totalField:string;
     stackFields: string[];
     values: FieldValue[];
 }
