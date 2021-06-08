@@ -1,4 +1,4 @@
-export interface ChartData {
+export interface PieChartData {
     title: string;
     value: number;
     legend?: string;

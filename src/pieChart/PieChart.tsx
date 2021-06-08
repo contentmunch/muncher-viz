@@ -2,44 +2,40 @@ import React, {RefObject, useCallback, useEffect} from "react";
 import * as d3 from "d3";
 import {PieArcDatum} from "d3";
 import "./assets/PieChart.scss";
-import {ChartData} from "./data/ChartData";
+import {PieChartData} from "./data/PieChartData";
 
 export const PieChart: React.FC<PieChartProps> = (
     {data, withLegend, legendTitle, onClick, valueFormatter}) => {
     const chartRef: RefObject<SVGSVGElement> = React.createRef();
     const legendRef: RefObject<SVGSVGElement> = React.createRef();
-    const viewBox = "-50 -50 100 100";
-    const radius = 50;
-    const pie = d3.pie<ChartData>().padAngle(0.005).sort(null).value(d => d.value);
-    const arc = d3.arc<PieArcDatum<ChartData>>().innerRadius(0).outerRadius(radius - 1);
-    const pieData = pie(data);
-    const formatNumber = useCallback((num: number, index: number) => {
-        if (valueFormatter) {
-            return valueFormatter(num, index);
-        } else {
-            return num;
-        }
-    }, [valueFormatter]);
-
-    const color = d3.scaleOrdinal()
-        .domain(
-            (d3.extent(data, (d) => {
-                return d.title
-            }) as unknown) as string
-        )
-        .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), data.length).reverse())
-
-    const clickHandler = useCallback((e: any, d: PieArcDatum<ChartData>) => {
+    const clickHandler = useCallback((e: any, d: PieArcDatum<PieChartData>) => {
         if (onClick) {
             onClick(d.index);
         }
     }, [onClick]);
 
-    const legendText = useCallback((data: ChartData, index: number) => {
-        return data.legend ? data.legend : data.title + " (" + formatNumber(data.value, index) + ")";
-    }, []);
 
-    const draw = useCallback(() => {
+    useEffect(() => {
+        const viewBox = "-50 -50 100 100";
+        const radius = 50;
+        const pie = d3.pie<PieChartData>().padAngle(0.005).sort(null).value(d => d.value);
+        const arc = d3.arc<PieArcDatum<PieChartData>>().innerRadius(0).outerRadius(radius - 1);
+        const pieData = pie(data);
+        const legendText = (data: PieChartData, index: number) => data.legend ? data.legend : data.title + " (" + formatNumber(data.value, index) + ")";
+        const formatNumber = (num: number, index: number) => {
+            if (valueFormatter) {
+                return valueFormatter(num, index);
+            } else {
+                return num;
+            }
+        };
+        const color = d3.scaleOrdinal()
+            .domain(
+                (d3.extent(data, (d) => {
+                    return d.title
+                }) as unknown) as string
+            )
+            .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), data.length).reverse())
         const chart = d3.select(chartRef.current)
             .attr("viewBox", viewBox);
         chart.selectAll("g").remove();
@@ -51,7 +47,7 @@ export const PieChart: React.FC<PieChartProps> = (
             .classed("selected", d => d.data.isSelected)
             .attr("fill", d => color(d.data.title) as string)
             .attr("d", arc)
-            .append("title").text((d) => legendText(d.data,d.index));
+            .append("title").text((d) => legendText(d.data, d.index));
 
         chart.append("g")
             .classed("text", true)
@@ -105,12 +101,7 @@ export const PieChart: React.FC<PieChartProps> = (
 
         }
 
-    }, [arc, color, pieData, chartRef, legendRef, formatNumber, clickHandler, legendTitle, withLegend]);
-
-
-    useEffect(() => {
-        draw();
-    }, [draw]);
+    }, [chartRef, clickHandler, data, legendRef, legendTitle, valueFormatter, withLegend]);
     return (
         <div className="muncher-pie-chart">
             <svg ref={chartRef} className="svg-pie-chart"/>
@@ -128,7 +119,7 @@ export const PieChart: React.FC<PieChartProps> = (
 
 
 export interface PieChartProps {
-    data: ChartData[];
+    data: PieChartData[];
     withLegend?: boolean;
     legendTitle?: string;
     onClick?: (index: number) => void;

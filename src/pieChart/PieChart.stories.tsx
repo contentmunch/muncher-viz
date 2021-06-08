@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import {Meta, Story} from "@storybook/react";
 import {PieChart, PieChartProps} from "./PieChart";
-import {ChartData} from "./data/ChartData";
+import {PieChartData} from "./data/PieChartData";
 
 export default {
-    title: "chart/Pie Chart",
+    title: "Chart/Pie Chart",
     component: PieChart
 } as Meta;
 
@@ -12,7 +12,7 @@ export default {
 const Template: Story<PieChartProps> = (args) => {
 
     const [selectedIndex, setSelectedIndex] = useState(0);
-    const [pieData, setPieData] = useState<ChartData[]>([
+    const [pieData, setPieData] = useState<PieChartData[]>([
         {title: "First", value: 60, isSelected: true, legend: "First (23: 60%)"},
         {title: "Second", value: 1, isSelected: false},
         {title: "Third", value: 5, isSelected: false},

@@ -1,0 +1,43 @@
+@import "src/assets/variables";
+
+$tick-font: $sans-serif-font !default;
+$legend-font: $sans-serif-font !default;
+.muncher-bar-chart {
+  .svg-bar-chart {
+    width: 90vw;
+    @media(min-width: $medium-size) {
+
+      height: 30rem;
+    }
+
+    .tick {
+      text {
+        font-family: $tick-font;
+        font-size: .6rem;
+      }
+    }
+
+    .legend {
+      display: none;
+    }
+
+    .bar-rectangle:hover {
+      opacity: .8;
+    }
+
+    @media(min-width: $medium-size) {
+      .legend {
+        display: block;
+
+        text {
+          font-family: $legend-font;
+          font-size: .6rem;
+          text-transform: capitalize;
+        }
+      }
+    }
+
+  }
+
+
+}
