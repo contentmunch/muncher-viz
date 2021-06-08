@@ -12,7 +12,8 @@ export const StackedBarChart: React.FC<BarChartProps> = (
         const viewBox = "0 0 550 500";
         const height = data.values.length * 50;
         const width = 550 - margin.left - margin.right;
-        const defaultColorRange = ["#af7aa1", "#e15759", "#59a14f", "#f28e2c", "#4e79a7"];
+
+        const defaultColorRange = ["#e15759", "#4e79a7", "#af7aa1", "#f28e2c","#59a14f", "#261759", "#acd643", "#daf2dc"];
         const numberToPercent = (d: number, total: number) => toPercentage ? d / total * 100 : d;
         const percentToNumber = (percent: number, total: number) => toPercentage ? (percent * total / 100).toFixed(0) : percent;
         const fieldTotal = (fieldValue: FieldValue): number => {

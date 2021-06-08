@@ -152,7 +152,6 @@ const Template: Story<BarChartProps> = (args) => {
             <StackedBarChart
                 data={barData}
                 toPercentage={toPercent}
-                colorRange={["#af7aa1", "#e15759", "#59a14f", "#f28e2c", "#4e79a7"]}
             />
             <button onClick={togglePercent}>{toPercent ? "To Data" : "To Percent"}</button>
             &nbsp;&nbsp;&nbsp;&nbsp;
