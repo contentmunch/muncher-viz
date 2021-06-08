@@ -12,13 +12,14 @@ export const StackedBarChart: React.FC<BarChartProps> = (
         const viewBox = "0 0 550 500";
         const height = data.values.length * 50;
         const width = 550 - margin.left - margin.right;
-        const fieldData = (d: number, total: number) => toPercentage ? d / total * 100 : d;
+        const defaultColorRange = ["#af7aa1", "#e15759", "#59a14f", "#f28e2c", "#4e79a7"];
+        const numberToPercent = (d: number, total: number) => toPercentage ? d / total * 100 : d;
+        const percentToNumber = (percent: number, total: number) => toPercentage ? (percent * total / 100).toFixed(0) : percent;
         const fieldTotal = (fieldValue: FieldValue): number => {
-
             if (toPercentage) {
                 let percentTotal: number = 0;
                 data.stackFields.forEach(field => {
-                    percentTotal += fieldData(+fieldValue[field], +fieldValue[data.totalField]);
+                    percentTotal += numberToPercent(+fieldValue[field], +fieldValue[data.totalField]);
                 });
                 return percentTotal;
             } else
@@ -27,12 +28,11 @@ export const StackedBarChart: React.FC<BarChartProps> = (
         const formatData = (num: number): string => toPercentage ? num.toFixed(0) + "%" : num.toString();
         const maxValue = (): number => {
             const max = d3.max(data.values, d => fieldTotal(d));
-            return max === undefined ? 0 : max;
+            return max === undefined ? 0 : +max.toFixed(0);
         };
         const stackData = d3.stack<any>().keys(data.stackFields)
             .value((d, key) => {
-
-                return fieldData(d[key], d[data.totalField]);
+                return numberToPercent(d[key], d[data.totalField]);
             });
 
         const y = d3.scaleBand()
@@ -46,8 +46,14 @@ export const StackedBarChart: React.FC<BarChartProps> = (
             .domain([0, maxValue()]).nice();
 
         const z = d3.scaleOrdinal()
-            .range(colorRange ? colorRange : ["#af7aa1", "#e15759", "#59a14f", "#f28e2c", "#4e79a7"])
+            .range(colorRange ? colorRange : defaultColorRange)
             .domain(data.stackFields);
+
+        const colorToStackField = (color: string | undefined | null): string => {
+            if (color === undefined || color === null) return "";
+            const index = colorRange ? colorRange.findIndex(value => value === color) : defaultColorRange.findIndex(value => value === color);
+            return index > -1 && index < data.stackFields.length ? data.stackFields[index] : "";
+        }
 
         const svg = d3.select(svgRef.current)
             .attr("viewBox", viewBox);
@@ -56,14 +62,14 @@ export const StackedBarChart: React.FC<BarChartProps> = (
 
         const barChart = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
-        const fill = barChart.append("g")
+        const g = barChart.append("g")
             .selectAll("g")
             .data(stackData(data.values))
-            .join("g")
-            .attr("fill", d => z(d.key) as string);
+            .join("g");
 
+        const fill = g.attr("fill", d => z(d.key) as string);
 
-        fill.selectAll("rect")
+        const rect = fill.selectAll("rect")
             .data(d => d)
             .join("rect")
             .classed("bar-rectangle", true)
@@ -73,12 +79,13 @@ export const StackedBarChart: React.FC<BarChartProps> = (
             .attr("x", d => x(d[0]))
             .attr("width", d => x(d[1]) - x(d[0]))
             .attr("height", y.bandwidth())
-            .append("title")
-            .text((d, i) => {
-                console.log(d);
-                return (i)
-            });
 
+        rect.append("title").text((d, i, group) => {
+            const fillColor = group[i].parentNode?.parentElement?.getAttribute("fill");
+            const stackField = colorToStackField(fillColor);
+            const value = d[1] - d[0];
+            return `${stackField}: ${toPercentage ? formatData(value) : ""} (${percentToNumber(value, d.data[data.totalField])} of ${d.data[data.totalField]})`;
+        });
         barChart.append("g")
             .attr("class", "axis")
             .attr("transform", "translate(0,0)")
@@ -108,6 +115,7 @@ export const StackedBarChart: React.FC<BarChartProps> = (
             .attr("y", 9.5)
             .attr("dy", "0.32rem")
             .text(d => d);
+
     }, [svgRef, data.stackFields, data.values, data.titleField, data.totalField, colorRange, toPercentage]);
 
     useEffect(() => {
