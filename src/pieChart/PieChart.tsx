@@ -5,7 +5,7 @@ import "./assets/PieChart.scss";
 import {PieChartData} from "./data/PieChartData";
 
 export const PieChart: React.FC<PieChartProps> = (
-    {data, withLegend, legendTitle, onClick, valueFormatter}) => {
+    {data, withLegend, legendTitle, onClick, valueFormatter, colorRange}) => {
     const chartRef: RefObject<SVGSVGElement> = React.createRef();
     const legendRef: RefObject<SVGSVGElement> = React.createRef();
     const clickHandler = useCallback((e: any, d: PieArcDatum<PieChartData>) => {
@@ -29,13 +29,15 @@ export const PieChart: React.FC<PieChartProps> = (
                 return num;
             }
         };
+        const defaultColorRange = ["#e15759", "#4e79a7", "#59a14f", "#f28e2c", "#59a14f", "#261759", "#acd643", "#daf2dc"];
         const color = d3.scaleOrdinal()
             .domain(
                 (d3.extent(data, (d) => {
                     return d.title
                 }) as unknown) as string
             )
-            .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), data.length).reverse())
+            .range(colorRange ? colorRange : defaultColorRange)
+        //.range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), data.length).reverse())
         const chart = d3.select(chartRef.current)
             .attr("viewBox", viewBox);
         chart.selectAll("g").remove();
@@ -46,6 +48,7 @@ export const PieChart: React.FC<PieChartProps> = (
             .on('click', clickHandler)
             .classed("selected", d => d.data.isSelected)
             .attr("fill", d => color(d.data.title) as string)
+            .attr("fill-opacity",0.9)
             .attr("d", arc)
             .append("title").text((d) => legendText(d.data, d.index));
 
@@ -88,7 +91,8 @@ export const PieChart: React.FC<PieChartProps> = (
                 .on('click', clickHandler)
                 .classed("legend-rect", true)
                 .classed("legend-rect--selected", d => d.data.isSelected)
-                .attr("fill", d => color(d.data.title) as string);
+                .attr("fill", d => color(d.data.title) as string)
+                .attr("fill-opacity",0.9);
 
             legendGraphics.append("text").data(pieData).text((d) =>
                 legendText(d.data, d.index)
@@ -101,7 +105,7 @@ export const PieChart: React.FC<PieChartProps> = (
 
         }
 
-    }, [chartRef, clickHandler, data, legendRef, legendTitle, valueFormatter, withLegend]);
+    }, [chartRef, clickHandler, data, legendRef, legendTitle, valueFormatter, withLegend, colorRange]);
     return (
         <div className="muncher-pie-chart">
             <svg ref={chartRef} className="svg-pie-chart"/>
@@ -124,4 +128,5 @@ export interface PieChartProps {
     legendTitle?: string;
     onClick?: (index: number) => void;
     valueFormatter?: (num: number, index: number) => string;
+    colorRange?: string[];
 }
