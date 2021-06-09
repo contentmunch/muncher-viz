@@ -29,7 +29,7 @@ export const PieChart: React.FC<PieChartProps> = (
                 return num;
             }
         };
-        const defaultColorRange = ["#e15759", "#4e79a7", "#59a14f", "#f28e2c", "#59a14f", "#261759", "#acd643", "#daf2dc"];
+        const defaultColorRange = ["#4e79a7", "#59a14f", "#f28e2c", "#e15759", "#261759", "#acd643", "#daf2dc"];
         const color = d3.scaleOrdinal()
             .domain(
                 (d3.extent(data, (d) => {
