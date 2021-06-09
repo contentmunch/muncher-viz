@@ -302,6 +302,35 @@ const Template: Story<BarChartProps> = (args) => {
                 "Vacant": 10.5,
                 "Total": 100
             }
+        ],
+        [
+            {
+                "Title": "Cape Dutch Villas",
+                "Renewal": 43,
+                "New": 22,
+                "Extension": 0,
+                "Vacant": 35,
+                "Total": 126
+            }
+
+        ],
+        [
+            {
+                "Title": "Cape Dutch Villas",
+                "Renewal": 43,
+                "New": 22,
+                "Extension": 0,
+                "Vacant": 35,
+                "Total": 126
+            },
+            {
+                "Title": "Covenanter Hill",
+                "Renewal": 56,
+                "New": 33,
+                "Extension": 1,
+                "Vacant": 10,
+                "Total": 100
+            }
         ]
     ];
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -314,7 +343,7 @@ const Template: Story<BarChartProps> = (args) => {
     });
 
     const handleButtonClicked = () => {
-        const currentIndex = (selectedIndex + 1) % 3;
+        const currentIndex = (selectedIndex + 1) % initValue.length;
         setBarData({
             ...barData, values: initValue[currentIndex]
         });

@@ -8,12 +8,13 @@ export const StackedBarChart: React.FC<BarChartProps> = (
     const svgRef: RefObject<SVGSVGElement> = React.createRef();
 
     const draw = useCallback(() => {
-        const barSize = 50;
+        const barHeight = 30;
         const margin = {top: 40, right: 120, bottom: 40, left: 110};
-        const viewBox = "0 0 800 " + data.values.length * (barSize + 10);
+        const viewBoxWidth = 700;
+        const viewBox = `0 0 ${viewBoxWidth} ${data.values.length * (barHeight) + data.stackFields.length * 20}`;
 
-        const height = data.values.length * barSize;
-        const width = 800 - margin.left - margin.right;
+        const height = data.values.length * barHeight;
+        const width = viewBoxWidth - margin.left - margin.right;
         const defaultColorRange = ["#e15759", "#59a14f", "#f28e2c", "#4e79a7", "#59a14f", "#261759", "#acd643", "#daf2dc"];
         const numberToPercent = (d: number, total: number) => toPercentage ? d / total * 100 : d;
         const percentToNumber = (percent: number, total: number) => toPercentage ? (percent * total / 100).toFixed(0) : percent;
@@ -68,7 +69,7 @@ export const StackedBarChart: React.FC<BarChartProps> = (
             .selectAll("g")
             .data(stackData(data.values))
             .join("g")
-            .attr("fill-opacity", 0.8);
+            .attr("fill-opacity", 0.9);
 
         const fill = g.attr("fill", d => z(d.key) as string);
 
@@ -103,7 +104,7 @@ export const StackedBarChart: React.FC<BarChartProps> = (
             })
             .classed("bar-text", true)
             .attr("y", d => {
-                return y(d.data[data.titleField]) as number + 22;
+                return y(d.data[data.titleField]) as number + barHeight / 2;
             })
             .attr("text-anchor", "end")
             .attr("x", d => {
@@ -139,7 +140,7 @@ export const StackedBarChart: React.FC<BarChartProps> = (
 
 
         legend.append("rect")
-            .attr("fill-opacity", 0.8)
+            .attr("fill-opacity", 0.9)
             .attr("x", width - 19)
             .attr("y", 20)
             .attr("width", 19)

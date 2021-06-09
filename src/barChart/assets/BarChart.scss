@@ -12,7 +12,7 @@ $bar-font: $sans-serif-font !default;
     .tick {
       text {
         font-family: $tick-font;
-        font-size: .7rem;
+        font-size: .5rem;
       }
     }
 
@@ -27,7 +27,7 @@ $bar-font: $sans-serif-font !default;
     .bar-text {
       font-family: $bar-font;
       color: #000;
-      font-size: .6rem;
+      font-size: .4rem;
 
       fill: #000;
     }
@@ -38,11 +38,11 @@ $bar-font: $sans-serif-font !default;
 
         text {
           font-family: $legend-font;
-          font-size: .6rem;
+          font-size: .5rem;
           text-transform: capitalize;
         }
         .legend-title {
-          font-size: .7rem;
+          font-size: .6rem;
           font-weight: bold;
           text-transform: capitalize;
         }
