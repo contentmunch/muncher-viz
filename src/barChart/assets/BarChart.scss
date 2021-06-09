@@ -1,8 +1,8 @@
 @import "src/assets/variables";
 
-$tick-font: $sans-serif-font !default;
-$legend-font: $sans-serif-font !default;
-$bar-font: $sans-serif-font !default;
+$tick-font: $serif-font !default;
+$legend-font: $serif-font !default;
+$bar-font: $serif-font !default;
 .muncher-bar-chart {
   .svg-bar-chart {
     width: 91vw;
@@ -11,8 +11,9 @@ $bar-font: $sans-serif-font !default;
     }
     .tick {
       text {
+        color: #000;
         font-family: $tick-font;
-        font-size: .5rem;
+        font-size: .4rem;
       }
     }
 
@@ -27,8 +28,7 @@ $bar-font: $sans-serif-font !default;
     .bar-text {
       font-family: $bar-font;
       color: #000;
-      font-size: .4rem;
-
+      font-size: .3rem;
       fill: #000;
     }
 
@@ -38,14 +38,10 @@ $bar-font: $sans-serif-font !default;
 
         text {
           font-family: $legend-font;
-          font-size: .5rem;
+          font-size: .4rem;
           text-transform: capitalize;
         }
-        .legend-title {
-          font-size: .6rem;
-          font-weight: bold;
-          text-transform: capitalize;
-        }
+
       }
     }
 
