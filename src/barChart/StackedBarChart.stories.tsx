@@ -355,7 +355,6 @@ const Template: Story<BarChartProps> = (args) => {
     return (
         <>
             <StackedBarChart
-                title={"Occupancy"}
                 data={barData}
                 toPercentage={toPercent}
             />
