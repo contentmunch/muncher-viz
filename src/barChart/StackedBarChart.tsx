@@ -8,12 +8,13 @@ export const StackedBarChart: React.FC<BarChartProps> = (
     const svgRef: RefObject<SVGSVGElement> = React.createRef();
 
     const draw = useCallback(() => {
-        const margin = {top: 40, right: 120, bottom: 30, left: 100};
-        const viewBox = "0 0 550 500";
-        const height = data.values.length * 50;
-        const width = 550 - margin.left - margin.right;
+        const barSize = 50;
+        const margin = {top: 40, right: 120, bottom: 40, left: 110};
+        const viewBox = "0 0 800 " + data.values.length * (barSize + 10);
 
-        const defaultColorRange = ["#e15759", "#4e79a7", "#af7aa1", "#f28e2c","#59a14f", "#261759", "#acd643", "#daf2dc"];
+        const height = data.values.length * barSize;
+        const width = 800 - margin.left - margin.right;
+        const defaultColorRange = ["#e15759", "#59a14f", "#f28e2c", "#4e79a7", "#59a14f", "#261759", "#acd643", "#daf2dc"];
         const numberToPercent = (d: number, total: number) => toPercentage ? d / total * 100 : d;
         const percentToNumber = (percent: number, total: number) => toPercentage ? (percent * total / 100).toFixed(0) : percent;
         const fieldTotal = (fieldValue: FieldValue): number => {
@@ -38,7 +39,7 @@ export const StackedBarChart: React.FC<BarChartProps> = (
 
         const y = d3.scaleBand()
             .rangeRound([0, height])
-            .paddingInner(0.3)
+            .paddingInner(0.2)
             .align(0.1)
             .domain(data.values.map(d => d[data.titleField] as string));
 
@@ -66,13 +67,16 @@ export const StackedBarChart: React.FC<BarChartProps> = (
         const g = barChart.append("g")
             .selectAll("g")
             .data(stackData(data.values))
-            .join("g");
+            .join("g")
+            .attr("fill-opacity", 0.8);
 
         const fill = g.attr("fill", d => z(d.key) as string);
 
-        const rect = fill.selectAll("rect")
+        const bar = fill.selectAll("rect")
             .data(d => d)
-            .join("rect")
+            .enter();
+
+        bar.append("rect")
             .classed("bar-rectangle", true)
             .attr("y", d => {
                 return y(d.data[data.titleField]) as number;
@@ -80,13 +84,33 @@ export const StackedBarChart: React.FC<BarChartProps> = (
             .attr("x", d => x(d[0]))
             .attr("width", d => x(d[1]) - x(d[0]))
             .attr("height", y.bandwidth())
-
-        rect.append("title").text((d, i, group) => {
+            .append("title").text((d, i, group) => {
             const fillColor = group[i].parentNode?.parentElement?.getAttribute("fill");
             const stackField = colorToStackField(fillColor);
             const value = d[1] - d[0];
+
             return `${stackField}: ${toPercentage ? formatData(value) : ""} (${percentToNumber(value, d.data[data.totalField])} of ${d.data[data.totalField]})`;
         });
+        bar.append("text")
+            .text((d, i, group) => {
+                const value = d[1] - d[0];
+                const width = x(d[1]) - x(d[0]);
+                const percentText = `${formatData(value)} (${percentToNumber(value, d.data[data.totalField])} of ${d.data[data.totalField]})`;
+                const numberText = `${value} of ${d.data[data.totalField]}`;
+                if (toPercentage)
+                    return width > 80 ? percentText : "";
+                return width > 50 ? numberText : "";
+            })
+            .classed("bar-text", true)
+            .attr("y", d => {
+                return y(d.data[data.titleField]) as number + 22;
+            })
+            .attr("text-anchor", "end")
+            .attr("x", d => {
+                const width = x(d[1]) - x(d[0]);
+                return x(d[0]) + width - 5;
+            });
+
         barChart.append("g")
             .attr("class", "axis")
             .attr("transform", "translate(0,0)")
@@ -106,6 +130,7 @@ export const StackedBarChart: React.FC<BarChartProps> = (
             .attr("transform", (d, i) => "translate(120," + (i * 20) + ")");
 
         legend.append("rect")
+            .attr("fill-opacity", 0.8)
             .attr("x", width - 19)
             .attr("width", 19)
             .attr("height", 19)

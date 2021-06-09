@@ -2,18 +2,17 @@
 
 $tick-font: $sans-serif-font !default;
 $legend-font: $sans-serif-font !default;
+$bar-font: $sans-serif-font !default;
 .muncher-bar-chart {
   .svg-bar-chart {
-    width: 90vw;
+    width: 91vw;
     @media(min-width: $medium-size) {
-
-      height: 30rem;
+      width: 70vw;
     }
-
     .tick {
       text {
         font-family: $tick-font;
-        font-size: .6rem;
+        font-size: .7rem;
       }
     }
 
@@ -23,6 +22,14 @@ $legend-font: $sans-serif-font !default;
 
     .bar-rectangle:hover {
       opacity: .8;
+    }
+
+    .bar-text {
+      font-family: $bar-font;
+      color: #000;
+      font-size: .6rem;
+      font-weight: bold;
+      fill: #000;
     }
 
     @media(min-width: $medium-size) {

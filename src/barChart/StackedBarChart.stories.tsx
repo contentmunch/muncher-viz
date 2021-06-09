@@ -11,134 +11,310 @@ export default {
 
 const Template: Story<BarChartProps> = (args) => {
 
-    const initValue: FieldValue[][] = [[
-        {
-            "title": "Cape Dutch Villas",
-            "renewal": 16,
-            "new": 7,
-            "extension": 1,
-            "vacant": 2,
-            "total": 26
-        },
-        {
-            "title": "Covenanter Hill",
-            "renewal": 99,
-            "new": 96,
-            "extension": 1,
-            "vacant": 1,
-            "total": 197
-        },
-        {
-            "title": "HighGrove",
-            "renewal": 23,
-            "new": 22,
-            "extension": 1,
-            "vacant": 2,
-            "total": 48
-        },
-        {
-            "title": "MeadowCreek",
-            "renewal": 154,
-            "new": 74,
-            "extension": 1,
-            "vacant": 4,
-            "total": 233
-        },
-        {
-            "title": "Scholars Quad",
-            "renewal": 36,
-            "new": 36,
-            "extension": 0,
-            "vacant": 2,
-            "total": 74
-        },
-        {
-            "title": "Scholars Rooftop",
-            "renewal": 5,
-            "new": 8,
-            "extension": 0,
-            "vacant": 0,
-            "total": 13
-        }
-    ],
+    const first: StackedBarChartData = {
+        "titleField": "Title",
+        "totalField": "Total",
+        "stackFields": ["Renewal", "New", "Extension", "Vacant"],
+        "values": [{
+            "Title": "Scholars Rooftop",
+            "Renewal": 8,
+            "New": 5,
+            "Extension": 0,
+            "Vacant": 0,
+            "Total": 13
+        }, {
+            "Title": "Scholars Rock",
+            "Renewal": 50,
+            "New": 44,
+            "Extension": 0,
+            "Vacant": 0,
+            "Total": 94
+        }, {
+            "Title": "Huntington Gardens",
+            "Renewal": 25,
+            "New": 4,
+            "Extension": 0,
+            "Vacant": 4,
+            "Total": 33
+        }, {
+            "Title": "Covenanter Hill",
+            "Renewal": 114,
+            "New": 79,
+            "Extension": 0,
+            "Vacant": 3,
+            "Total": 196
+        }, {
+            "Title": "MeadowCreek",
+            "Renewal": 165,
+            "New": 56,
+            "Extension": 2,
+            "Vacant": 6,
+            "Total": 229
+        }, {
+            "Title": "Scholars Quad",
+            "Renewal": 40,
+            "New": 29,
+            "Extension": 0,
+            "Vacant": 3,
+            "Total": 72
+        }, {
+            "Title": "Cov Affordable",
+            "Renewal": 7,
+            "New": 2,
+            "Extension": 0,
+            "Vacant": 2,
+            "Total": 11
+        }, {
+            "Title": "Porto Flats",
+            "Renewal": 25,
+            "New": 15,
+            "Extension": 0,
+            "Vacant": 6,
+            "Total": 46
+        }, {
+            "Title": "Cape Dutch Villas",
+            "Renewal": 20,
+            "New": 3,
+            "Extension": 0,
+            "Vacant": 1,
+            "Total": 24
+        }, {
+            "Title": "Verona Park",
+            "Renewal": 5,
+            "New": 2,
+            "Extension": 0,
+            "Vacant": 1,
+            "Total": 8
+        }, {
+            "Title": "HighGrove",
+            "Renewal": 36,
+            "New": 15,
+            "Extension": 0,
+            "Vacant": 7,
+            "Total": 58
+        }, {
+            "Title": "SummerHouse",
+            "Renewal": 67,
+            "New": 58,
+            "Extension": 0,
+            "Vacant": 5,
+            "Total": 130
+        }]
+    };
+    const initValue: FieldValue[][] = [
+        [{
+            "Title": "Scholars Rooftop",
+            "Renewal": 8,
+            "New": 5,
+            "Extension": 0,
+            "Vacant": 0,
+            "Total": 13
+        }, {
+            "Title": "Scholars Rock",
+            "Renewal": 50,
+            "New": 44,
+            "Extension": 0,
+            "Vacant": 0,
+            "Total": 94
+        }, {
+            "Title": "Huntington Gardens",
+            "Renewal": 25,
+            "New": 4,
+            "Extension": 0,
+            "Vacant": 4,
+            "Total": 33
+        }, {
+            "Title": "Covenanter Hill",
+            "Renewal": 114,
+            "New": 79,
+            "Extension": 0,
+            "Vacant": 3,
+            "Total": 196
+        }, {
+            "Title": "MeadowCreek",
+            "Renewal": 165,
+            "New": 56,
+            "Extension": 2,
+            "Vacant": 6,
+            "Total": 229
+        }, {
+            "Title": "Scholars Quad",
+            "Renewal": 40,
+            "New": 29,
+            "Extension": 0,
+            "Vacant": 3,
+            "Total": 72
+        }, {
+            "Title": "Cov Affordable",
+            "Renewal": 7,
+            "New": 2,
+            "Extension": 0,
+            "Vacant": 2,
+            "Total": 11
+        }, {
+            "Title": "Porto Flats",
+            "Renewal": 25,
+            "New": 15,
+            "Extension": 0,
+            "Vacant": 6,
+            "Total": 46
+        }, {
+            "Title": "Cape Dutch Villas",
+            "Renewal": 20,
+            "New": 3,
+            "Extension": 0,
+            "Vacant": 1,
+            "Total": 24
+        }, {
+            "Title": "Verona Park",
+            "Renewal": 5,
+            "New": 2,
+            "Extension": 0,
+            "Vacant": 1,
+            "Total": 8
+        }, {
+            "Title": "HighGrove",
+            "Renewal": 36,
+            "New": 15,
+            "Extension": 0,
+            "Vacant": 7,
+            "Total": 58
+        }, {
+            "Title": "SummerHouse",
+            "Renewal": 67,
+            "New": 58,
+            "Extension": 0,
+            "Vacant": 5,
+            "Total": 130
+        }],
         [
             {
-                "title": "Cape Dutch Villas",
-                "renewal": 43,
-                "new": 22,
-                "extension": 0,
-                "vacant": 35,
-                "total": 126
+                "Title": "Cape Dutch Villas",
+                "Renewal": 16,
+                "New": 7,
+                "Extension": 1,
+                "Vacant": 2,
+                "Total": 26
             },
             {
-                "title": "Covenanter Hill",
-                "renewal": 56,
-                "new": 33,
-                "extension": 1,
-                "vacant": 10,
-                "total": 100
+                "Title": "Covenanter Hill",
+                "Renewal": 99,
+                "New": 96,
+                "Extension": 1,
+                "Vacant": 1,
+                "Total": 197
             },
             {
-                "title": "HighGrove",
-                "renewal": 60,
-                "new": 30,
-                "extension": 8,
-                "vacant": 2,
-                "total": 100
+                "Title": "HighGrove",
+                "Renewal": 23,
+                "New": 22,
+                "Extension": 1,
+                "Vacant": 2,
+                "Total": 48
             },
             {
-                "title": "MeadowCreek",
-                "renewal": 70,
-                "new": 17,
-                "extension": 6,
-                "vacant": 7,
-                "total": 100
+                "Title": "MeadowCreek",
+                "Renewal": 154,
+                "New": 74,
+                "Extension": 1,
+                "Vacant": 4,
+                "Total": 233
             },
             {
-                "title": "Scholars Quad",
-                "renewal": 80,
-                "new": 12,
-                "extension": 2,
-                "vacant": 6,
-                "total": 100
+                "Title": "Scholars Quad",
+                "Renewal": 36,
+                "New": 36,
+                "Extension": 0,
+                "Vacant": 2,
+                "Total": 74
             },
             {
-                "title": "Scholars Rooftop",
-                "renewal": 52.5,
-                "new": 30,
-                "extension": 7,
-                "vacant": 10.5,
-                "total": 100
+                "Title": "Scholars Rooftop",
+                "Renewal": 5,
+                "New": 8,
+                "Extension": 0,
+                "Vacant": 0,
+                "Total": 13
+            }
+        ],
+        [
+            {
+                "Title": "Cape Dutch Villas",
+                "Renewal": 43,
+                "New": 22,
+                "Extension": 0,
+                "Vacant": 35,
+                "Total": 126
             },
             {
-                "title": "Porto Flats",
-                "renewal": 62.5,
-                "new": 20,
-                "extension": 7,
-                "vacant": 10.5,
-                "total": 100
+                "Title": "Covenanter Hill",
+                "Renewal": 56,
+                "New": 33,
+                "Extension": 1,
+                "Vacant": 10,
+                "Total": 100
             },
             {
-                "title": "Verona Park",
-                "renewal": 32.5,
-                "new": 50,
-                "extension": 7,
-                "vacant": 10.5,
-                "total": 100
+                "Title": "HighGrove",
+                "Renewal": 60,
+                "New": 30,
+                "Extension": 8,
+                "Vacant": 2,
+                "Total": 100
+            },
+            {
+                "Title": "MeadowCreek",
+                "Renewal": 70,
+                "New": 17,
+                "Extension": 6,
+                "Vacant": 7,
+                "Total": 100
+            },
+            {
+                "Title": "Scholars Quad",
+                "Renewal": 80,
+                "New": 12,
+                "Extension": 2,
+                "Vacant": 6,
+                "Total": 100
+            },
+            {
+                "Title": "Scholars Rooftop",
+                "Renewal": 52.5,
+                "New": 30,
+                "Extension": 7,
+                "Vacant": 10.5,
+                "Total": 100
+            },
+            {
+                "Title": "Porto Flats",
+                "Renewal": 62.5,
+                "New": 20,
+                "Extension": 7,
+                "Vacant": 10.5,
+                "Total": 100
+            },
+            {
+                "Title": "Verona Park",
+                "Renewal": 32.5,
+                "New": 50,
+                "Extension": 7,
+                "Vacant": 10.5,
+                "Total": 100
             }
         ]
     ];
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [toPercent, setToPercent] = useState(true);
     const [barData, setBarData] = useState<StackedBarChartData>({
-        stackFields: ["renewal", "new", "extension", "vacant"],
-        totalField: "total",
-        titleField: "title",
-        values: initValue[0]
+        "titleField": "Title",
+        "totalField": "Total",
+        "stackFields": ["Renewal", "New", "Extension", "Vacant"],
+        "values": initValue[0]
     });
 
     const handleButtonClicked = () => {
-        const currentIndex = selectedIndex === 0 ? 1 : 0;
+        const currentIndex = (selectedIndex + 1) % 3;
         setBarData({
             ...barData, values: initValue[currentIndex]
         });
