@@ -4,7 +4,7 @@ import "./assets/BarChart.scss";
 import {FieldValue, StackedBarChartData} from "./data/StackedBarChartData";
 
 export const StackedBarChart: React.FC<BarChartProps> = (
-    {data, colorRange, toPercentage}) => {
+    {title, data, colorRange, toPercentage}) => {
     const svgRef: RefObject<SVGSVGElement> = React.createRef();
 
     const draw = useCallback(() => {
@@ -121,24 +121,34 @@ export const StackedBarChart: React.FC<BarChartProps> = (
             .attr("transform", "translate(0," + height + ")")
             .call(d3.axisBottom(x).tickFormat(x => formatData(x.valueOf())))
 
-        const legend = barChart.append("g")
+        const chartLegend = barChart.append("g")
             .classed("legend", true)
+            .attr("text-anchor", "end");
+
+        chartLegend.append("text").text(title ? title : "Legend")
+            .classed("legend-title", true)
             .attr("text-anchor", "end")
-            .selectAll("g")
-            .data(data.stackFields.slice().reverse())
+            .attr("y", 10)
+            .attr("x", width + margin.right)
+            .classed("legend-title", true);
+
+        const legend = chartLegend.selectAll("g")
+            .data(data.stackFields.slice())
             .join("g")
-            .attr("transform", (d, i) => "translate(120," + (i * 20) + ")");
+            .attr("transform", (d, i) => "translate(" + margin.right + "," + (i * 20) + ")");
+
 
         legend.append("rect")
             .attr("fill-opacity", 0.8)
             .attr("x", width - 19)
+            .attr("y", 20)
             .attr("width", 19)
             .attr("height", 19)
             .attr("fill", d => z(d) as string);
 
         legend.append("text")
             .attr("x", width - 24)
-            .attr("y", 9.5)
+            .attr("y", 20 + 9.5)
             .attr("dy", "0.32rem")
             .text(d => d);
 
@@ -157,6 +167,7 @@ export const StackedBarChart: React.FC<BarChartProps> = (
 
 
 export interface BarChartProps {
+    title?: string;
     data: StackedBarChartData;
     toPercentage?: boolean;
     colorRange?: string[];

@@ -41,6 +41,11 @@ $bar-font: $sans-serif-font !default;
           font-size: .6rem;
           text-transform: capitalize;
         }
+        .legend-title {
+          font-size: .7rem;
+          font-weight: bold;
+          text-transform: capitalize;
+        }
       }
     }
 
