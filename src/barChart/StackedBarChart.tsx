@@ -12,7 +12,7 @@ export const StackedBarChart: React.FC<BarChartProps> = (
         const siblingGap = 3;
         const margin = {top: 0, right: 10, bottom: 40, left: 110};
         const viewBoxWidth = 580;
-        const viewBox = `0 0 ${viewBoxWidth} ${data.values.length * (barHeight) + data.stackFields.length * 20}`;
+        const viewBox = `0 0 ${viewBoxWidth} ${data.values.length * (barHeight) +  20}`;
 
         const height = data.values.length * barHeight;
         const width = viewBoxWidth - margin.left - margin.right;
@@ -128,8 +128,7 @@ export const StackedBarChart: React.FC<BarChartProps> = (
 
         if (withLegend) {
 
-
-            const legendViewBox = `0 0 45 ${data.stackFields.length * 20}`;
+            const legendViewBox = `0 0 45 ${data.stackFields.length * 8}`;
             const chartLegend = d3.select(legendRef.current).attr("viewBox", legendViewBox);
             chartLegend.selectAll("g").remove();
             chartLegend.selectAll("text").remove();
