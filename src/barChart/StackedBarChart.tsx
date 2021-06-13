@@ -154,7 +154,7 @@ export const StackedBarChart: React.FC<BarChartProps> = (
                 .text(d => d);
         }
 
-    }, [svgRef, legendRef, data.stackFields, data.values, data.titleField, data.totalField, colorRange, toPercentage]);
+    }, [svgRef, legendRef, data.stackFields, data.values, data.titleField, data.totalField, colorRange, toPercentage,isComparison,withLegend]);
 
     useEffect(() => {
         draw();
