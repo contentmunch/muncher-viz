@@ -41,12 +41,12 @@ $bar-font: $serif-font !default;
     justify-content: flex-start;
     .svg-bar-chart-legend {
       display: block;
-      width: 20rem;
+      width: 8rem;
       //height: 50rem;
 
       text {
         font-family: $legend-font;
-        font-size: .08rem;
+        font-size: .16rem;
         text-transform: capitalize;
       }
 
