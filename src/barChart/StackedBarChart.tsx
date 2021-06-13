@@ -4,11 +4,12 @@ import "./assets/StackedBarChart.scss";
 import {FieldValue, StackedBarChartData} from "./data/StackedBarChartData";
 
 export const StackedBarChart: React.FC<BarChartProps> = (
-    {data, colorRange, toPercentage, withLegend, legendTitle}) => {
+    {data, colorRange, toPercentage, withLegend, isComparison}) => {
     const svgRef: RefObject<SVGSVGElement> = React.createRef();
     const legendRef: RefObject<SVGSVGElement> = React.createRef();
     const draw = useCallback(() => {
-        const barHeight = 30;
+        const barHeight = isComparison ? 20 : 30;
+        const siblingGap = 3;
         const margin = {top: 0, right: 10, bottom: 40, left: 110};
         const viewBoxWidth = 580;
         const viewBox = `0 0 ${viewBoxWidth} ${data.values.length * (barHeight) + data.stackFields.length * 20}`;
@@ -79,8 +80,8 @@ export const StackedBarChart: React.FC<BarChartProps> = (
 
         bar.append("rect")
             .classed("bar-rectangle", true)
-            .attr("y", d => {
-                return y(d.data[data.titleField]) as number;
+            .attr("y", (d, i) => {
+                return y(d.data[data.titleField]) as number - (isComparison && i % 2 === 1 ? siblingGap : 0);
             })
             .attr("x", d => x(d[0]))
             .attr("width", d => x(d[1]) - x(d[0]))
@@ -103,8 +104,8 @@ export const StackedBarChart: React.FC<BarChartProps> = (
                 return width > 50 ? numberText : "";
             })
             .classed("bar-text", true)
-            .attr("y", d => {
-                return y(d.data[data.titleField]) as number + barHeight / 2;
+            .attr("y", (d, i) => {
+                return y(d.data[data.titleField]) as number + barHeight / 2 - (isComparison && i % 2 === 1 ? siblingGap : 0);
             })
             .attr("text-anchor", "end")
             .attr("x", d => {
@@ -114,13 +115,17 @@ export const StackedBarChart: React.FC<BarChartProps> = (
 
         barChart.append("g")
             .attr("class", "axis")
-            .attr("transform", "translate(0,0)")
+            .attr("transform", (d, i) => {
+
+                return `translate(0,0)`;
+            })
             .call(d3.axisLeft(y).tickSizeOuter(0));
 
         barChart.append("g")
             .attr("class", "axis")
             .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x).tickFormat(x => formatData(x.valueOf())))
+            .call(d3.axisBottom(x).tickFormat(x => formatData(x.valueOf())));
+
         if (withLegend) {
 
 
@@ -138,13 +143,13 @@ export const StackedBarChart: React.FC<BarChartProps> = (
 
             legend.append("rect")
                 .attr("fill-opacity", 0.9)
-                .attr("x",  28)
+                .attr("x", 28)
                 .attr("width", 6)
                 .attr("height", 6)
                 .attr("fill", d => z(d) as string);
 
             legend.append("text")
-                .attr("x",  26)
+                .attr("x", 26)
                 .attr("dy", "0.24rem")
                 .text(d => d);
         }
@@ -173,6 +178,6 @@ export interface BarChartProps {
     data: StackedBarChartData;
     toPercentage?: boolean;
     colorRange?: string[];
-    legendTitle?: string;
     withLegend?: boolean;
+    isComparison?: boolean;
 }
