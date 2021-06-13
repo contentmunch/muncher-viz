@@ -335,6 +335,7 @@ const Template: Story<BarChartProps> = (args) => {
     ];
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [toPercent, setToPercent] = useState(true);
+    const [excludeLegend, setExcludeLegend] = useState(false);
     const [barData, setBarData] = useState<StackedBarChartData>({
         "titleField": "Title",
         "totalField": "Total",
@@ -357,10 +358,16 @@ const Template: Story<BarChartProps> = (args) => {
             <StackedBarChart
                 data={barData}
                 toPercentage={toPercent}
+                excludeLegend={excludeLegend}
             />
             <button onClick={togglePercent}>{toPercent ? "To Data" : "To Percent"}</button>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <button onClick={handleButtonClicked}>Change Data</button>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <button onClick={() => {
+                setExcludeLegend(!excludeLegend);
+            }}>Exclude Legend
+            </button>
         </>
     );
 };

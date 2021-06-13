@@ -4,13 +4,13 @@ import "./assets/BarChart.scss";
 import {FieldValue, StackedBarChartData} from "./data/StackedBarChartData";
 
 export const StackedBarChart: React.FC<BarChartProps> = (
-    { data, colorRange, toPercentage}) => {
+    {data, colorRange, toPercentage, excludeLegend}) => {
     const svgRef: RefObject<SVGSVGElement> = React.createRef();
 
     const draw = useCallback(() => {
         const barHeight = 30;
-        const margin = {top: 40, right: 120, bottom: 40, left: 110};
-        const viewBoxWidth = 700;
+        const margin = {top: 40, right: excludeLegend ? 0 : 120, bottom: 40, left: 110};
+        const viewBoxWidth = excludeLegend ? 580 : 700;
         const viewBox = `0 0 ${viewBoxWidth} ${data.values.length * (barHeight) + data.stackFields.length * 20}`;
 
         const height = data.values.length * barHeight;
@@ -121,37 +121,39 @@ export const StackedBarChart: React.FC<BarChartProps> = (
             .attr("class", "axis")
             .attr("transform", "translate(0," + height + ")")
             .call(d3.axisBottom(x).tickFormat(x => formatData(x.valueOf())))
+        if (!excludeLegend) {
+            const chartLegend = barChart.append("g")
+                .classed("legend", true)
+                .attr("text-anchor", "end");
+            //
+            // chartLegend.append("text").text(title ? title : "Legend")
+            //     .classed("legend-title", true)
+            //     .attr("text-anchor", "end")
+            //     .attr("y", 10)
+            //     .attr("x", width + margin.right)
+            //     .classed("legend-title", true);
 
-        const chartLegend = barChart.append("g")
-            .classed("legend", true)
-            .attr("text-anchor", "end");
-        //
-        // chartLegend.append("text").text(title ? title : "Legend")
-        //     .classed("legend-title", true)
-        //     .attr("text-anchor", "end")
-        //     .attr("y", 10)
-        //     .attr("x", width + margin.right)
-        //     .classed("legend-title", true);
-
-        const legend = chartLegend.selectAll("g")
-            .data(data.stackFields.slice())
-            .join("g")
-            .attr("transform", (d, i) => "translate(" + margin.right + "," + (i * 20) + ")");
+            const legend = chartLegend.selectAll("g")
+                .data(data.stackFields.slice())
+                .join("g")
+                .attr("transform", (d, i) => "translate(" + margin.right + "," + (i * 20) + ")");
 
 
-        legend.append("rect")
-            .attr("fill-opacity", 0.9)
-            .attr("x", width - 19)
-            //.attr("y", 0)
-            .attr("width", 19)
-            .attr("height", 19)
-            .attr("fill", d => z(d) as string);
+            legend.append("rect")
+                .attr("fill-opacity", 0.9)
+                .attr("x", width - 19)
+                //.attr("y", 0)
+                .attr("width", 19)
+                .attr("height", 19)
+                .attr("fill", d => z(d) as string);
 
-        legend.append("text")
-            .attr("x", width - 24)
-            .attr("y",  8.5)
-            .attr("dy", "0.32rem")
-            .text(d => d);
+            legend.append("text")
+                .attr("x", width - 24)
+                .attr("y", 8.5)
+                .attr("dy", "0.32rem")
+                .text(d => d);
+        }
+
 
     }, [svgRef, data.stackFields, data.values, data.titleField, data.totalField, colorRange, toPercentage]);
 
@@ -171,4 +173,5 @@ export interface BarChartProps {
     data: StackedBarChartData;
     toPercentage?: boolean;
     colorRange?: string[];
+    excludeLegend?: boolean;
 }

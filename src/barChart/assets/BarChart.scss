@@ -27,9 +27,10 @@ $bar-font: $serif-font !default;
 
     .bar-text {
       font-family: $bar-font;
-      color: #000;
+      color: white;
       font-size: .3rem;
       fill: #000;
+
     }
 
     @media(min-width: $medium-size) {
