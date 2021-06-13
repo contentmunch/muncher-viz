@@ -4,10 +4,14 @@ $tick-font: $serif-font !default;
 $legend-font: $serif-font !default;
 $bar-font: $serif-font !default;
 .muncher-bar-chart {
+  .svg-bar-chart-legend {
+    display: none;
+  }
+
   .svg-bar-chart {
-    width: 91vw;
+    width: 90vw;
     @media(min-width: $medium-size) {
-      width: 70vw;
+      width: 60vw;
     }
     .tick {
       text {
@@ -17,9 +21,6 @@ $bar-font: $serif-font !default;
       }
     }
 
-    .legend {
-      display: none;
-    }
 
     .bar-rectangle:hover {
       opacity: .8;
@@ -33,20 +34,23 @@ $bar-font: $serif-font !default;
 
     }
 
-    @media(min-width: $medium-size) {
-      .legend {
-        display: block;
-
-        text {
-          font-family: $legend-font;
-          font-size: .4rem;
-          text-transform: capitalize;
-        }
-
-      }
-    }
-
   }
+  @media(min-width: $medium-size) {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    .svg-bar-chart-legend {
+      display: block;
+      width: 20rem;
+      //height: 50rem;
 
+      text {
+        font-family: $legend-font;
+        font-size: .08rem;
+        text-transform: capitalize;
+      }
+
+    }
+  }
 
 }
