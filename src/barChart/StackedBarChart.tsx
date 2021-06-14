@@ -30,8 +30,8 @@ export const StackedBarChart: React.FC<BarChartProps> = (
         const barData = combineData();
         const barHeight = comparisonData ? 20 : 30;
         const siblingGap = 3;
-        const margin = {top: 0, right: 10, bottom: 40, left: 110};
-        const viewBoxWidth = 680;
+        const margin = {top: 0, right: 10, bottom: 40, left: comparisonData ? 150 : 110};
+        const viewBoxWidth = 580;
         const viewBox = `0 0 ${viewBoxWidth} ${barData.values.length * (barHeight) + 20}`;
 
         const height = barData.values.length * barHeight;
