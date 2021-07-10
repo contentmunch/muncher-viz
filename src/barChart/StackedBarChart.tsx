@@ -119,9 +119,11 @@ export const StackedBarChart: React.FC<BarChartProps> = (
                 const width = x(d[1]) - x(d[0]);
                 const percentText = `${formatData(value)} (${percentToNumber(value, d.data[barData.totalField])} of ${d.data[barData.totalField]})`;
                 const numberText = `${value} of ${d.data[barData.totalField]}`;
+                const minWidthForPercentText = 50;
                 if (toPercentage)
-                    return width > 80 ? percentText : "";
-                return width > 50 ? numberText : "";
+                    return width > minWidthForPercentText ? percentText : "";
+                const minWidthForText = 30;
+                return width > minWidthForText ? numberText : "";
             })
             .classed("bar-text", true)
             .attr("y", (d, i) => {
@@ -135,7 +137,7 @@ export const StackedBarChart: React.FC<BarChartProps> = (
 
         barChart.append("g")
             .attr("class", "axis")
-            .attr("transform", (d, i) => {
+            .attr("transform", () => {
 
                 return `translate(0,0)`;
             })
