@@ -3,6 +3,7 @@ export interface StackedBarChartData {
     totalField:string;
     stackFields: string[];
     values: FieldValue[];
+    titleSeparator?:string;
 }
 
 export interface FieldValue {

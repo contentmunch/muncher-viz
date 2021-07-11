@@ -14,12 +14,43 @@ export const StackedBarChart: React.FC<BarChartProps> = (
             combinedData.totalField = data.totalField;
             combinedData.titleField = data.titleField;
             combinedData.stackFields = data.stackFields;
-
+            const extractPostfix = (titleSeparator: string, value?: string | number): string => {
+                if (value) {
+                    const titleArray = value.toString().split(titleSeparator);
+                    return titleArray.length > 1 ? titleArray[1] : "*";
+                }
+                return "*";
+            };
+            const extractTitle = (titleSeparator: string, value?: string | number): string | null => {
+                return value ? value.toString().split(titleSeparator)[0] : null;
+            };
             if (comparisonData) {
+
                 combinedData.values = [];
+                let lastPostFix = "*";
+                let emptyCount = 0;
                 data.values.forEach((value, index) => {
                     combinedData.values.push(value);
-                    combinedData.values.push(comparisonData.values[index]);
+                    if (data.titleSeparator) {
+                        const compareIndex = index - emptyCount;
+                        const referenceTitle = extractTitle(data.titleSeparator, value[data.titleField]);
+                        const title = comparisonData.values[compareIndex] ? extractTitle(data.titleSeparator, comparisonData.values[compareIndex][data.titleField]) : null;
+
+                        if (referenceTitle === title) {
+                            combinedData.values.push(comparisonData.values[compareIndex]);
+                            lastPostFix = extractPostfix(data.titleSeparator, comparisonData.values[compareIndex][data.titleField]);
+                        } else {
+                            const titleFieldValue: FieldValue = {};
+                            titleFieldValue[combinedData.titleField] = referenceTitle + lastPostFix;
+                            combinedData.values.push(titleFieldValue);
+                            emptyCount++;
+                        }
+
+                    } else {
+                        if (comparisonData.values[index])
+                            combinedData.values.push(comparisonData.values[index]);
+                    }
+
                 });
             } else {
                 combinedData.values = data.values;
