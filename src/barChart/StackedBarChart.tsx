@@ -41,7 +41,7 @@ export const StackedBarChart: React.FC<BarChartProps> = (
                             lastPostFix = extractPostfix(data.titleSeparator, comparisonData.values[compareIndex][data.titleField]);
                         } else {
                             const titleFieldValue: FieldValue = {};
-                            titleFieldValue[combinedData.titleField] = referenceTitle + lastPostFix;
+                            titleFieldValue[combinedData.titleField] = referenceTitle + data.titleSeparator + lastPostFix;
                             combinedData.values.push(titleFieldValue);
                             emptyCount++;
                         }
