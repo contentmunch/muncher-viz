@@ -1,6 +1,6 @@
 {
   "name": "@contentmunch/muncher-viz",
-  "version": "0.1.44",
+  "version": "1.0.0",
   "description": "Muncher visualization components",
   "author": "asikpradhan",
   "license": "MIT",
@@ -9,6 +9,10 @@
   "files": [
     "lib/"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/contentmunch/muncher-viz.git"
+  },
   "scripts": {
     "start": "npm run storybook",
     "prebuild": "rimraf lib",
@@ -29,65 +33,6 @@
     "storybook": "start-storybook -p 6010 -s public",
     "build-storybook": "build-storybook -s public -o docs"
   },
-  "devDependencies": {
-    "@babel/cli": "^7.13.16",
-    "@babel/core": "^7.14.0",
-    "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@babel/preset-env": "^7.14.1",
-    "@babel/preset-react": "^7.13.13",
-    "@babel/preset-typescript": "^7.13.0",
-    "@storybook/addon-a11y": "^6.2.9",
-    "@storybook/addon-actions": "^6.2.9",
-    "@storybook/addon-essentials": "^6.2.9",
-    "@storybook/addon-links": "^6.2.9",
-    "@storybook/addon-storyshots": "^6.2.9",
-    "@storybook/node-logger": "^6.2.9",
-    "@storybook/preset-create-react-app": "^3.1.7",
-    "@storybook/react": "^6.2.9",
-    "@testing-library/jest-dom": "^5.12.0",
-    "@testing-library/react": "^11.2.6",
-    "@testing-library/user-event": "^12.8.3",
-    "@types/d3": "^6.3.0",
-    "@types/jest": "^26.0.23",
-    "@types/node": "^12.20.12",
-    "@types/react": "^17.0.5",
-    "@types/react-dom": "^17.0.3",
-    "babel-loader": "^8.1.0",
-    "node-sass": "^4.14.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "react-test-renderer": "^17.0.2",
-    "rimraf": "^3.0.2",
-    "typescript": "^4.2.4",
-    "web-vitals": "^1.1.1"
-  },
-  "dependencies": {
-    "d3": "^6.7.0",
-    "normalize.css": "^8.0.1"
-  },
-  "peerDependencies": {
-    "react": "^16.8.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/contentmunch/muncher-viz.git"
-  },
-  "bugs": {
-    "url": "https://github.com/contentmunch/muncher-viz/issues"
-  },
-  "homepage": "https://viz.muncher.dev",
-  "directories": {
-    "doc": "docs",
-    "lib": "lib"
-  },
-  "keywords": [
-    "html5",
-    "reactjs",
-    "visulization",
-    "d3js",
-    "component driven"
-  ],
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -105,5 +50,58 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/plugin-proposal-class-properties": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "@babel/preset-react": "^7.16.0",
+    "@babel/preset-typescript": "^7.16.0",
+    "@storybook/addon-a11y": "^6.3.12",
+    "@storybook/addon-actions": "^6.3.12",
+    "@storybook/addon-docs": "^6.3.12",
+    "@storybook/addon-essentials": "^6.3.12",
+    "@storybook/addon-links": "^6.3.12",
+    "@storybook/addon-storyshots": "^6.3.12",
+    "@storybook/node-logger": "^6.3.12",
+    "@storybook/preset-create-react-app": "^3.2.0",
+    "@storybook/react": "^6.3.12",
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
+    "@types/d3": "^6.3.0",
+    "@types/jest": "^26.0.24",
+    "@types/node": "^12.20.37",
+    "@types/react": "^17.0.35",
+    "@types/react-dom": "^17.0.11",
+    "babel-loader": "^8.1.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "react-test-renderer": "^17.0.2",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.5.2",
+    "web-vitals": "^1.1.2"
+  },
+  "dependencies": {
+    "d3": "^6.7.0",
+    "node-sass": "^6.0.1",
+    "normalize.css": "^8.0.1"
+  },
+  "bugs": {
+    "url": "https://github.com/contentmunch/muncher-viz/issues"
+  },
+  "homepage": "https://viz.muncher.dev",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib"
+  },
+  "keywords": [
+    "html5",
+    "reactjs",
+    "visulization",
+    "d3js",
+    "component driven"
+  ]
 }
