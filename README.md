@@ -1,4 +1,4 @@
-![Test release and publish](https://github.com/contentmunch/muncher-viz/workflows/Test%20release%20and%20publish/badge.svg)
+![Build release and publish](https://github.com/contentmunch/muncher-viz/workflows/Build%20release%20and%20publish/badge.svg)
 # Muncher-Viz
 A html5 svg and scss based [visualization component library](https://viz.muncher.dev/)
 
