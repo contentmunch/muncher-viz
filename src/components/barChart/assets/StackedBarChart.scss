@@ -1,0 +1,56 @@
+@import "src/components/assets/variables";
+
+$tick-font: $serif-font !default;
+$legend-font: $serif-font !default;
+$bar-font: $serif-font !default;
+.muncher-bar-chart {
+  .svg-bar-chart-legend {
+    display: none;
+  }
+
+  .svg-bar-chart {
+    width: 90vw;
+    @media(min-width: $medium-size) {
+      width: 60vw;
+    }
+    .tick {
+      text {
+        color: #000;
+        font-family: $tick-font;
+        font-size: .4rem;
+      }
+    }
+
+
+    .bar-rectangle:hover {
+      opacity: .8;
+    }
+
+    .bar-text {
+      font-family: $bar-font;
+      color: white;
+      font-size: .3rem;
+      fill: #000;
+
+    }
+
+  }
+  @media(min-width: $medium-size) {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    .svg-bar-chart-legend {
+      display: block;
+      width: 10vw;
+      //height: 50rem;
+
+      text {
+        font-family: $legend-font;
+        font-size: .16rem;
+        text-transform: capitalize;
+      }
+
+    }
+  }
+
+}
