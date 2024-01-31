@@ -1,0 +1,12 @@
+@import "~normalize.css";
+@import "src/assets/variables";
+
+html {
+  //so that reactjs scrollIntoView can be smooth
+  scroll-behavior: smooth;
+  font-size: 100%;
+  font-family: $sans-serif-font;
+  color: $primary-color;
+  background: $light-color;
+}
+

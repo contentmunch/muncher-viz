@@ -13,7 +13,7 @@ To use this component library:
 In the project directory, you can run:
 
 ### `npm start`
-Launches the component explorer 
+Launches the component explorer on port 6010
 
 ### `npm test`
 
