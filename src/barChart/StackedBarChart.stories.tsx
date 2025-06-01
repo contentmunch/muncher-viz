@@ -252,6 +252,7 @@ export const Default: Story = () => {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [toPercent, setToPercent] = useState(true);
     const [withLegend, setWithLegend] = useState(true);
+    const [showOnlyValues, setShowOnlyValues] = useState(false);
     const [barData, setBarData] = useState<StackedBarChartData>({
         "titleField": "Title",
         "totalField": "Total",
@@ -269,14 +270,22 @@ export const Default: Story = () => {
     const togglePercent = () => {
         setToPercent(!toPercent);
     }
+
+    const toggleShowOnlyValues = () => {
+        setShowOnlyValues(!showOnlyValues);
+    }
+
     return (
         <>
             <StackedBarChart
                 data={barData}
                 toPercentage={toPercent}
                 withLegend={withLegend}
+                showOnlyValues={showOnlyValues}
             />
             <button onClick={togglePercent}>{toPercent ? "To Data" : "To Percent"}</button>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <button onClick={toggleShowOnlyValues}>{showOnlyValues ? "Show Percentage" : "Show only values"}</button>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <button onClick={handleButtonClicked}>Change Data</button>
             &nbsp;&nbsp;&nbsp;&nbsp;

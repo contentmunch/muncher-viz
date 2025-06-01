@@ -4,7 +4,7 @@ import "./assets/StackedBarChart.scss";
 import {FieldValue, StackedBarChartData} from "./data/StackedBarChartData";
 
 export const StackedBarChart: React.FC<BarChartProps> = (
-    {data, comparisonData, colorRange, toPercentage, withLegend}) => {
+    {data, comparisonData, colorRange, toPercentage, withLegend, showOnlyValues}) => {
     const svgRef: RefObject<SVGSVGElement> = React.createRef();
     const legendRef: RefObject<SVGSVGElement> = React.createRef();
     const draw = useCallback(() => {
@@ -143,13 +143,17 @@ export const StackedBarChart: React.FC<BarChartProps> = (
                 const stackField = colorToStackField(fillColor);
                 const value = d[1] - d[0];
 
-                return `${stackField}: ${toPercentage ? formatData(value) : ""} (${percentToNumber(value, d.data[barData.totalField])} of ${d.data[barData.totalField]})`;
+                return showOnlyValues ? `${stackField}: ${percentToNumber(value, d.data[barData.totalField])}` :
+                    `${stackField}: ${toPercentage ? formatData(value) : ""} (${percentToNumber(value, d.data[barData.totalField])} of ${d.data[barData.totalField]})`;
             });
             bar.append("text")
-                .text((d, i, group) => {
+                .text((d, _i, _group) => {
                     const value = d[1] - d[0];
                     const width = x(d[1]) - x(d[0]);
-                    const percentText = `${formatData(value)} (${percentToNumber(value, d.data[barData.totalField])} of ${d.data[barData.totalField]})`;
+                    const percentText = showOnlyValues ? `${percentToNumber(value, d.data[barData.totalField])}` :
+                        `${formatData(value)} (${percentToNumber(value, d.data[barData.totalField])} of ${d.data[barData.totalField]})`;
+
+
                     const numberText = `${value} of ${d.data[barData.totalField]}`;
                     const minWidthForPercentText = 50;
                     if (toPercentage)
@@ -174,11 +178,13 @@ export const StackedBarChart: React.FC<BarChartProps> = (
                     return `translate(0,0)`;
                 })
                 .call(d3.axisLeft(y).tickSizeOuter(0));
+            if (!showOnlyValues) {
+                barChart.append("g")
+                    .attr("class", "axis")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(d3.axisBottom(x).tickFormat(x => formatData(x.valueOf())));
+            }
 
-            barChart.append("g")
-                .attr("class", "axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(d3.axisBottom(x).tickFormat(x => formatData(x.valueOf())));
 
             if (withLegend) {
 
@@ -235,4 +241,5 @@ export interface BarChartProps {
     toPercentage?: boolean;
     colorRange?: string[];
     withLegend?: boolean;
+    showOnlyValues?: boolean;
 }
